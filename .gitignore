@@ -5,4 +5,6 @@ __pycache__/
 .env
 dist/
 build/
+!deploy-web/build/
+!deploy-web/build/sites-vite-plugin.ts
 *.egg-info/

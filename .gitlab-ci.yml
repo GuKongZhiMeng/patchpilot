@@ -6,6 +6,23 @@ unit-test:
   script:
     - PYTHONPATH=src python -m unittest discover -s tests -v
 
+web-unit-test:
+  stage: test
+  image: node:22-slim
+  before_script:
+    - corepack enable
+    - corepack prepare pnpm@11.16.0 --activate
+  script:
+    - cd deploy-web
+    - pnpm install --frozen-lockfile
+    - pnpm run build
+    - node --test tests/rendered-html.test.mjs
+  artifacts:
+    when: always
+    expire_in: 7 days
+    paths:
+      - deploy-web/dist/
+
 docker-build:
   stage: build
   image: docker:27-cli
@@ -14,4 +31,3 @@ docker-build:
     DOCKER_TLS_CERTDIR: "/certs"
   script:
     - docker build -t patchpilot:$CI_COMMIT_SHA .
-
