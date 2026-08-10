@@ -2,7 +2,7 @@
 
 ## 当前可核验证据
 
-当前仓库未配置 Git 远端，因此尚无真实 MR/PR URL，不能把本地分支或 Git bundle 冒充 MR/PR。
+GitHub 主仓库：<https://github.com/GuKongZhiMeng/patchpilot>。历史 worktree 分支已推送；新增的 GitHub CI 通过 `feature-github-ci` 分支建立真实 PR。
 
 | 工作分支 | 原始提交 | 集成到 master 的提交 | 内容 |
 |---|---|---|---|

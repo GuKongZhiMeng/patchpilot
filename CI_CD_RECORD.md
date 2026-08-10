@@ -28,6 +28,18 @@
 
 若教师允许其它 GitLab 或明确豁免远端 CI，应把其书面说明与替代证据一并保存；具体步骤见 `MR_PR_RECORD.md`。
 
+## GitHub Actions 记录
+
+- 仓库：<https://github.com/GuKongZhiMeng/patchpilot>
+- 工作流：`.github/workflows/ci.yml`
+- Jobs：`unit-test`、`web-unit-test`、`docker-build`
+- PR URL：`PENDING_GITHUB_PR_URL`
+- PR CI 状态：`PENDING`
+- 合并后 master workflow URL：`PENDING_GITHUB_ACTIONS_URL`
+- 最终状态：`PENDING`
+
+本节只有在 GitHub 页面显示对应 workflow 全部通过后才能改为 pass。
+
 ## WebUI 部署记录
 
 - 生产 URL：<https://patchpilot-agent-harness.sturdy-angel-7006.chatgpt.site>
