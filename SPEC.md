@@ -136,4 +136,4 @@ CLI/Web -> RunService -> AgentLoop -> LLMPort
 - 通用命令静态分类无法证明任意程序安全，因此采用“可执行文件白名单 + 工作区 + 超时”，不是通用沙箱；README 必须明确边界。
 - Windows 文件权限检查语义不同；主机优先 OS keyring，容器优先 Docker secret。
 - 真实 provider 的响应格式可能变化；适配器严格校验，课程测试只承诺 mock 的确定性。
-- 公网 URL、NJU Git PR 和 CI pass 需要仓库账号，不能由本地构建替代。
+- 公网 WebUI、GitHub PR 与 CI pass 已提供；线上页面只运行无凭据的 mock 演示，不代表真实 provider 或宿主命令执行服务。
