@@ -35,6 +35,12 @@ patchpilot serve --host 127.0.0.1 --port 8765
 patchpilot run "修复失败测试" --workspace ./target-repo --model YOUR_MODEL
 ```
 
+## 线上 WebUI
+
+生产地址：<https://patchpilot-agent-harness.sturdy-angel-7006.chatgpt.site>
+
+当前部署采用 owner-only 访问控制，需要站点所有者登录。它用于展示交付证据和确定性机制实验，不接收 API key，也不会从浏览器执行真实仓库命令。若要让课程评分者无需所有者身份直接访问，必须由学生明确批准后再把 Sites 访问策略改为共享或公开。
+
 真实运行默认要求 Docker 容器隔离。若在宿主机运行，必须显式加 `--unsafe-local-exec`；这表示你理解测试/构建会执行仓库代码，argv 白名单不是 OS 沙箱。
 
 默认连接 OpenAI-compatible `https://api.openai.com/v1/chat/completions`；兼容供应商用 `--base-url` 指定。模型名必须由使用者显式给出，避免把会变化的默认模型写死。
@@ -104,7 +110,7 @@ docs/             TDD 与冷启动证据
 - 首版一次只运行一个 action，不支持并发 agent。
 - HITL token 内核已实现和测试；真实 CLI 会显示精确 action 并等待一次性 `y/N` 批准，非交互调用则以 `awaiting_approval` 停机。
 - WebUI 展示 mock 机制演示，不从浏览器触发真实代码修改。
-- 公网 URL、NJU Git PR 与最终 CI pass 需要课程账号完成，见 `SUBMISSION_CHECKLIST.md`。
+- 线上 WebUI 已以 owner-only 方式部署；对评分者共享、NJU Git PR 与最终 CI pass 仍需学生账号确认，见 `SUBMISSION_CHECKLIST.md`。
 - 当前 Windows 验证环境未安装 Docker CLI，因此本地未执行镜像构建；GitLab CI 已配置 `docker-build`，必须在远端确认 pass 后再声称镜像可用。
 
 ## 第三方代码与许可

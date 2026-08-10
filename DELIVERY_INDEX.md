@@ -12,7 +12,7 @@
 | 6 | GitLab CI，含 unit-test job | 已完成 | `.gitlab-ci.yml`：`unit-test`、`web-unit-test`、`docker-build` |
 | 7 | CI/CD 最终通过记录 | 待课程远端确认 | 本地结果见 `CI_CD_RECORD.md`；远端 pipeline URL/截图必须在 NJU Git 实际运行后补入 |
 | 8 | 1500–2500 字反思 | 待学生本人完成 | `REFLECTION.md` 只提供证据索引和提纲，遵守“学生本人撰写”要求 |
-| 9 | 线上部署 URL 与 WebUI | 进行中 | 部署源码位于 `deploy-web/`；成功发布后把 URL 写入本页和 `README.md` |
+| 9 | 线上部署 URL 与 WebUI | 已部署（owner-only） | <https://patchpilot-agent-harness.sturdy-angel-7006.chatgpt.site>；源码位于 `deploy-web/`，向评分者共享仍需学生明确批准 |
 | A | 自实现 harness 内核 | 已完成 | `src/patchpilot/engine.py`、`models.py`、`tools.py`、`guardrails.py`、`feedback.py`、`memory.py` |
 | A | mock-LLM 单元测试 | 已完成 | `tests/test_engine.py` 等离线确定性测试 |
 | A | 机制演示 | 已完成 | `python -m patchpilot demo`；部署 WebUI 的交互式机制实验台 |
@@ -24,5 +24,6 @@
 3. 等待 `unit-test`、`web-unit-test`、`docker-build` 全部通过，将 pipeline URL 和截图补入 `CI_CD_RECORD.md`。
 4. 学生本人完成并校对 `REFLECTION.md`，确保 1500–2500 字且观点真实。
 5. 若课程明确要求 Superpowers 插件调用证据，在 Codex 插件市场安装后真实使用；当前仓库只陈述方法参考，不冒充插件证据。
+6. 明确决定站点访问范围；当前为 owner-only，评分者无法以匿名身份访问。
 
 提交前还应执行 `git grep` 与历史扫描，确认无真实 key、token、`.env` 或个人敏感信息。

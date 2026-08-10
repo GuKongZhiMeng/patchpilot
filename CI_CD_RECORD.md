@@ -25,3 +25,11 @@
 - 证据截图：`PENDING_SCREENSHOT_PATH_OR_LINK`
 
 禁止把本地通过或占位符改写为“远端已通过”。只有 NJU Git 实际 pipeline 的页面和 job 日志可以关闭这一项。
+
+## WebUI 部署记录
+
+- 生产 URL：<https://patchpilot-agent-harness.sturdy-angel-7006.chatgpt.site>
+- Sites 生产构建：通过
+- 访问范围：owner-only（未擅自公开）
+- 部署源码：`deploy-web/`，与仓库提交中的已验证源码一致
+- 公开给课程评分者：待学生明确批准访问策略变更
