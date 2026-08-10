@@ -33,10 +33,10 @@
 - 仓库：<https://github.com/GuKongZhiMeng/patchpilot>
 - 工作流：`.github/workflows/ci.yml`
 - Jobs：`unit-test`、`web-unit-test`、`docker-build`
-- PR URL：`PENDING_GITHUB_PR_URL`
-- PR CI 状态：`PENDING`
-- 合并后 master workflow URL：`PENDING_GITHUB_ACTIONS_URL`
-- 最终状态：`PENDING`
+- PR URL：<https://github.com/GuKongZhiMeng/patchpilot/pull/1>
+- PR CI 状态：`PASS`（commit `19d3328`，3/3 checks passed）
+- master workflow：<https://github.com/GuKongZhiMeng/patchpilot/actions/workflows/ci.yml>
+- 最终状态：`PENDING_MERGE`（合并后以 workflow 页面最新 master run 为准）
 
 本节只有在 GitHub 页面显示对应 workflow 全部通过后才能改为 pass。
 
