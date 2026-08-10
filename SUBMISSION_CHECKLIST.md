@@ -7,6 +7,6 @@
 - [ ] 为 feature 分支建立 MR/PR，在描述中标明 subagent 与人工修订。
 - [ ] 确认 `.gitlab-ci.yml` 的 `unit-test` 和 `docker-build` 均 pass，保存最终 pipeline URL/截图。
 - [ ] 将镜像推送到可访问 registry，并记录 tag/digest。
-- [x] WebUI 已部署到 Sites 并在 README 填入 URL；当前 owner-only。若评分者需要匿名访问，须由学生明确批准共享/公开策略。
-- [ ] `git grep` 与历史扫描确认无真实 key、`.env`、token 或个人敏感数据。
+- [x] WebUI 已公开部署到 Sites，并在 README 填入可直接访问的生产 URL。
+- [x] `git grep` 与历史扫描确认无真实 key、`.env`、token 或个人敏感数据。
 - [ ] 把 PLAN 的 task 状态、commit hash、MR 编号更新为远端最终值。

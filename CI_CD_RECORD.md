@@ -30,6 +30,6 @@
 
 - 生产 URL：<https://patchpilot-agent-harness.sturdy-angel-7006.chatgpt.site>
 - Sites 生产构建：通过
-- 访问范围：owner-only（未擅自公开）
+- 访问范围：public（学生于 2026-08-10 明确授权公开）
 - 部署源码：`deploy-web/`，与仓库提交中的已验证源码一致
-- 公开给课程评分者：待学生明确批准访问策略变更
+- 课程评分者访问：可直接使用生产 URL
