@@ -26,6 +26,8 @@
 
 禁止把本地通过或占位符改写为“远端已通过”。只有 NJU Git 实际 pipeline 的页面和 job 日志可以关闭这一项。
 
+若教师允许其它 GitLab 或明确豁免远端 CI，应把其书面说明与替代证据一并保存；具体步骤见 `MR_PR_RECORD.md`。
+
 ## WebUI 部署记录
 
 - 生产 URL：<https://patchpilot-agent-harness.sturdy-angel-7006.chatgpt.site>

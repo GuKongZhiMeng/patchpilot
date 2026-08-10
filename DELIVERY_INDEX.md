@@ -11,7 +11,7 @@
 | 5 | Agent 日志 | 已完成 | `AGENT_LOG.md`，并由提交历史和 `docs/*_TDD.md` 交叉验证 |
 | 6 | GitLab CI，含 unit-test job | 已完成 | `.gitlab-ci.yml`：`unit-test`、`web-unit-test`、`docker-build` |
 | 7 | CI/CD 最终通过记录 | 待课程远端确认 | 本地结果见 `CI_CD_RECORD.md`；远端 pipeline URL/截图必须在 NJU Git 实际运行后补入 |
-| 8 | 1500–2500 字反思 | 待学生本人完成 | `REFLECTION.md` 只提供证据索引和提纲，遵守“学生本人撰写”要求 |
+| 8 | 1500–2500 字反思 | 待学生本人完成 | `REFLECTION.md` 为正文结构，`REFLECTION_WORKSHEET.md` 聚焦卡壳证据；遵守“学生本人撰写”要求 |
 | 9 | 线上部署 URL 与 WebUI | 已完成（公开） | <https://patchpilot-agent-harness.sturdy-angel-7006.chatgpt.site>；源码位于 `deploy-web/`，评分者可直接访问 |
 | A | 自实现 harness 内核 | 已完成 | `src/patchpilot/engine.py`、`models.py`、`tools.py`、`guardrails.py`、`feedback.py`、`memory.py` |
 | A | mock-LLM 单元测试 | 已完成 | `tests/test_engine.py` 等离线确定性测试 |
@@ -26,3 +26,5 @@
 5. 若课程明确要求 Superpowers 插件调用证据，在 Codex 插件市场安装后真实使用；当前仓库只陈述方法参考，不冒充插件证据。
 
 提交前还应执行 `git grep` 与历史扫描，确认无真实 key、token、`.env` 或个人敏感信息。
+
+MR/PR 的诚实完成路径与本地分支证据见 `MR_PR_RECORD.md`。

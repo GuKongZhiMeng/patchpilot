@@ -12,11 +12,13 @@
 | 2026-08-10 | T3 | worktree + subagent + TDD | 独立 feedback worktree | 5 Green；`1002963` | 演示后发现耗时字段会破坏指纹，增加归一化回归测试 |
 | 2026-08-10 | T4 | TDD | SQLite 隔离、检索、敏感数据拒绝 | 3 Green；`697aa21` | 清除误提交的 pycache 并加入 gitignore |
 | 2026-08-10 | T5 | TDD | mock LLM 失败→修复→终检 | 4 Green；`d4f4387` | 同秒同大小 Python 重写触发 pyc 缓存，修正夹具 |
-| 2026-08-10 | T6/T7 | TDD + finishing branch | credential/demo/Web/分发 | 待最终 commit | 不伪造公网部署、PR、CI pass 或学生个人反思 |
+| 2026-08-10 | T6/T7 | TDD + finishing branch | credential/demo/Web/分发 | `0b0d413`、`246e3e2`、`71d512c` | 首版真实宿主执行、HITL 与 WebUI 存在评审缺口；根据 Critical/Important 结论修复，不以“测试已绿”替代安全审查 |
 | 2026-08-10 | 两阶段 review | requesting-code-review | 独立 reviewer 先查 spec 再查安全/质量 | `docs/CODE_REVIEW.md` | 修复宿主执行 Critical、HITL/Web Important 与 raw 复用 Minor；34 tests Green |
+| 2026-08-10 | 最终交付 | 分发 + Sites 托管 | 构建部署 WebUI、产出源码包/Git bundle/wheel | `19d5010`、`10aaf32`、`1f65783` | Windows 无 WSL、Node 不在 PATH、私有源码推送遇到 sandbox/ownership/过期 token；逐项定位后完成公开部署，未把环境失败误写成代码失败 |
 
 ## 流程偏离
 
 - Superpowers 插件在当前 Codex 会话中不可调用；按其公开七步方法组织并留证，但不能声称“插件已触发”。学生应在自己的 Codex 插件市场安装后，把实际调用证据补入本日志。
 - 当前环境只有本地仓库，没有 NJU Git 远端和账号，因此 worktree 分支在本地完成，未伪造 PR URL。
 - 正式 code review 将以本地确定性测试、diff 自审与独立 subagent 任务审查完成；远端 MR 审查需学生补充。
+- 当前仓库仍未配置远端；因此不存在可核验的 MR/PR URL 或 GitLab pipeline。最合适的补救是由学生本人在 `student/reflection` 分支完成反思，以该真实变更创建 MR，并以合并后的最终 pipeline 作为 CI pass 证据。
