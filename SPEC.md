@@ -16,6 +16,20 @@
 
 ## 3. 功能规格
 
+### 3.0 核心协议 v1（规范性）
+
+所有动作是 UTF-8 JSON 对象，统一形式为 `{"action":"名称","args":{...}}`，顶层和 `args` 均拒绝未知字段。`read_file` 参数为 `path:str`；`write_file` 为 `path:str, content:str`；`run_command` 为 `argv:list[str]`；`run_checks` 无参数；`remember` 为 `kind:"convention"|"decision"|"failure", text:str`；`finish` 为 `summary:str`。空 action、非对象、未知名称、缺字段和错误类型分别返回稳定机器码 `invalid_json`、`invalid_action`、`unknown_action`、`missing_argument`、`invalid_argument`。
+
+Python 公共 API：`Action.from_json(text: str) -> Action`；`Config.from_mapping(data: Mapping) -> Config`；`LLMPort.complete(messages: list[dict[str,str]]) -> str`。协议错误统一抛 `PatchPilotError(code, message)`。`ScriptedLLM(responses: list[str])` 每次弹出一个原始响应，把 messages 深拷贝追加到 `calls`；耗尽抛 `llm_script_exhausted`，不可循环。
+
+Config 顶级字段与默认值：`max_steps=12`（1..100）、`command_timeout_seconds=30`（1..300）、`max_output_bytes=16384`（1024..1048576）、`max_file_bytes=1048576`、`allowed_commands=["python","python3","pytest","git"]`（仅按 `Path(argv[0]).name.lower()` 精确匹配）、`check_commands=[["python","-m","unittest","discover","-s","tests"]]`、`repeat_failure_limit=2`、`repair_budget=4`、`memory_limit=5`、`bind_host="127.0.0.1"`、`bind_port=8765`。未知字段、错误类型、越界值均拒绝。
+
+OpenAI-compatible adapter 构造参数为 `base_url, model, api_key, timeout_seconds`，固定 POST `{base_url}/chat/completions`，header 为 `Authorization: Bearer ...` 与 `Content-Type: application/json`，body 为 `{"model":...,"messages":...,"temperature":0}`。只接受 `choices` 为非空数组且 `choices[0].message.content` 为字符串；HTTP、网络、JSON、schema 错误分别映射 `llm_http_error`、`llm_network_error`、`llm_invalid_json`、`llm_invalid_response`；额外响应字段允许。
+
+风险表：工作区越界、`rm -rf`/`rmdir /s`、磁盘格式化、提权和 shell 解释器 (`sh -c`/`cmd /c`/`powershell -Command`) 为 `deny`；`git push`、`git reset --hard`、`docker push`、发布命令为 `approval`；白名单内普通测试/构建为 `allow`；不在白名单为 `deny`。审批接口 `ApprovalStore.issue(action, ttl_seconds) -> token` 与 `consume(token, action) -> bool`；绑定内容是 action 的排序键 JSON SHA-256，token 60 秒过期、单次消费，错误为 `approval_required`、`approval_invalid`、`approval_expired`、`approval_replayed`。
+
+路径仅接受相对路径，拒绝绝对路径和词法 `..`。解析后的父目录与目标（若存在）必须在工作区 realpath 内；Windows junction/reparse point 按解析后路径处理。读取/写入上限分别为 Config 限值；写入创建父目录，以同目录临时文件 + `os.replace` 原子覆盖，不保留旧 mode；拒绝目录和非 UTF-8 文本。
+
 ### 3.1 决策与主循环
 
 - 输入：任务、工作区、声明式策略、LLM 实现。
@@ -123,4 +137,3 @@ CLI/Web -> RunService -> AgentLoop -> LLMPort
 - Windows 文件权限检查语义不同；主机优先 OS keyring，容器优先 Docker secret。
 - 真实 provider 的响应格式可能变化；适配器严格校验，课程测试只承诺 mock 的确定性。
 - 公网 URL、NJU Git PR 和 CI pass 需要仓库账号，不能由本地构建替代。
-

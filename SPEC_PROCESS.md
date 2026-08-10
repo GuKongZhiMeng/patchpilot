@@ -19,9 +19,14 @@
 
 ## 冷启动验证
 
-待 `SPEC.md`/`PLAN.md` 首版落盘后填写：agent 类型、暂停点、问题、误读、产出差距及关键修订 diff。
+- agent：`gpt-5.6-terra`，全新无历史上下文，隔离分支 `coldstart-review`；只提供 SPEC 与 PLAN。
+- 暂停点：在写 T1 首个测试前主动停止，因为公共 API 与 schema 无法唯一推导；没有生成实现或伪造 Red 结果。
+- 暴露缺陷：Action JSON、Config 默认值/API、ScriptedLLM 耗尽语义、HTTP adapter 线协议、风险分类/审批 API、Windows 路径语义均不足。
+- 产出差距：预期尝试 T1/T2，实际只完成规格审计。该差距说明原 spec 依赖主 agent 的隐含上下文，而不是冷启动可执行文档。
+- 修订前：仅写“解析单个 JSON 动作”“未知字段报错”“危险动作分类”。
+- 修订后：新增“核心协议 v1”，明确 action envelope、字段类型、稳定错误码、完整默认配置、LLM port、HTTP 请求/响应、风险表、审批绑定和路径矩阵。
+- 原始证据保存在隔离 worktree 的 `COLDSTART_REPORT.md`，并复制到最终仓库 `docs/COLDSTART_REPORT.md`。
 
 ## 对 brainstorming 的初步反思
 
 好处是先强迫主贡献、威胁模型和客观验收对齐，避免“写一个 prompt wrapper”。不足是逐节签字在用户明确授权默认执行时成本较高；本项目采用书面假设与显式偏离记录保留可审计性。
-
