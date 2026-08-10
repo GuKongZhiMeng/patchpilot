@@ -10,7 +10,7 @@
 | 4 | README 必备章节 | 已完成 | `README.md`：项目简介、安装、运行、分发命令、目录结构、安全边界、已知限制 |
 | 5 | Agent 日志 | 已完成 | `AGENT_LOG.md`，并由提交历史和 `docs/*_TDD.md` 交叉验证 |
 | 6 | GitLab CI，含 unit-test job | 已完成 | `.gitlab-ci.yml`：`unit-test`、`web-unit-test`、`docker-build` |
-| 7 | CI/CD 最终通过记录 | 已完成（GitHub Actions） | `CI_CD_RECORD.md`；PR #1 与最新 `master` workflow 的 3 项检查均通过 |
+| 7 | CI/CD 最终通过记录 | 已完成（GitHub Actions） | `CI_CD_RECORD.md`；PR #1、最终 PR #2 与最新 `master` workflow 均要求 3/3 检查通过 |
 | 8 | 1500–2500 字反思 | 已完成，待学生最终逐句确认 | `REFLECTION.md`；核心观点与原始问答由学生提供，AI 事实校验与润色已在文末披露 |
 | 9 | 线上部署 URL 与 WebUI | 已完成（公开） | <https://patchpilot-agent-harness.sturdy-angel-7006.chatgpt.site>；源码位于 `deploy-web/`，评分者可直接访问 |
 | A | 自实现 harness 内核 | 已完成 | `src/patchpilot/engine.py`、`models.py`、`tools.py`、`guardrails.py`、`feedback.py`、`memory.py` |
