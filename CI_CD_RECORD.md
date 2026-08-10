@@ -28,6 +28,8 @@
 - PR URL：<https://github.com/GuKongZhiMeng/patchpilot/pull/1>
 - PR CI 状态：`PASS`（commit `19d3328`，3/3 checks passed）
 - 合并状态：`MERGED`（merge commit `623285f`，学生于 2026-08-10 确认合并）
+- 最终反思 PR：<https://github.com/GuKongZhiMeng/patchpilot/pull/2>（`student/reflection → master`）
+- PR #2 检查：以 PR 页面最新 head 为准，必须保持 Python、WebUI、Docker 3/3 passed 后合并
 - master workflow：<https://github.com/GuKongZhiMeng/patchpilot/actions/workflows/ci.yml>
 - 最终状态：`PASS`（以 workflow 页面最新 `master` run 为准，3/3 jobs passed）
 
