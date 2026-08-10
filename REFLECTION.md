@@ -24,6 +24,8 @@ Windows 符号链接测试则提醒我，skip 也必须被诚实解释。本机�
 
 独立 review 还发现首版 HITL 只有审批相关对象，却没有在 AgentLoop 中形成真正的暂停与续跑；WebUI 也只是原始演示摘要。修订后，无审批回调时系统进入 `awaiting_approval`，批准后使用内容绑定、单次且会过期的 token，页面则展示工作区、安全状态和事件时间线。“有接口”不等于端到端可用，这是没有独立评审最容易漏掉的部分。
 
+最有效的 context 策略不是一次塞入全部聊天记录，而是给冷启动 agent 只提供 SPEC、PLAN、单个 task 和明确停机条件，再用 commit 与测试结果恢复状态。凭据和分发要求也迫使我补想了通常会忽略的问题：key 不能进入参数、日志或模型上下文，宿主机应使用 keyring，容器应使用只读 secret；“本机能运行”也不等于他人能获取和复现，因此需要 wheel、Dockerfile、锁定依赖、CI 构建和公开但不接收 key 的演示页面共同构成交付证据。
+
 ## 5. 对方法论的评价与重做计划
 
 本项目中最有实质价值的方法是 test-driven-development、subagent-driven-development 和 requesting-code-review：前者让失败指纹问题变成可复现契约，中者降低了 T2/T3 的上下文干扰，后者发现了测试未覆盖的宿主执行与 HITL 缺口。但这些名称本身不构成证据；如果没有 Red/Green 记录、独立提交和审查修订，它们也可能只是形式。本次仓库记录的是对 Superpowers 方法的参考，并未把未安装插件冒充成真实插件调用。

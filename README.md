@@ -70,6 +70,15 @@ secret 文件在 POSIX 上必须为 `0600`；Docker secret 通常满足只读挂
 
 ## 分发
 
+主要提交形态是可离线安装的 Python wheel；课程提交包同时包含源码 ZIP 与完整 Git bundle。仓库不声称已经发布到 PyPI。
+
+```bash
+python -m pip install patchpilot_harness-0.1.0-py3-none-any.whl
+patchpilot demo
+```
+
+Docker/OCI 作为可复现隔离运行方式：
+
 Docker/OCI：
 
 ```bash
@@ -77,7 +86,7 @@ docker build -t patchpilot:local .
 docker run --rm -p 127.0.0.1:8765:8765 patchpilot:local
 ```
 
-目标平台为 Linux amd64/arm64；多架构发布可用 `docker buildx build --platform linux/amd64,linux/arm64 ...`。镜像以非 root 用户运行。包管理器分发可用 `python -m build` 生成 wheel/sdist（仓库未声称已发布到 PyPI）。
+目标平台为 Linux amd64/arm64；多架构发布可用 `docker buildx build --platform linux/amd64,linux/arm64 ...`。镜像以非 root 用户运行。GitHub Actions 会验证镜像能够构建，但本项目不声称已经把镜像发布到公共 registry。
 
 ## 目录结构
 
@@ -110,8 +119,8 @@ docs/             TDD 与冷启动证据
 - 首版一次只运行一个 action，不支持并发 agent。
 - HITL token 内核已实现和测试；真实 CLI 会显示精确 action 并等待一次性 `y/N` 批准，非交互调用则以 `awaiting_approval` 停机。
 - WebUI 展示 mock 机制演示，不从浏览器触发真实代码修改。
-- 线上 WebUI 已公开部署；NJU Git PR 与最终 CI pass 仍需学生账号确认，见 `SUBMISSION_CHECKLIST.md`。
-- 当前 Windows 验证环境未安装 Docker CLI，因此本地未执行镜像构建；GitLab CI 已配置 `docker-build`，必须在远端确认 pass 后再声称镜像可用。
+- 线上 WebUI 已公开部署；公开 GitHub 仓库、PR 与最终 CI 证据见 `CI_CD_RECORD.md` 和 `MR_PR_RECORD.md`。
+- 当前 Windows 验证环境未安装 Docker CLI，因此本地未执行镜像构建；GitHub Actions 的 `docker-build` 已远端通过。
 
 ## 第三方代码与许可
 

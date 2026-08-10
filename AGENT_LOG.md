@@ -15,10 +15,11 @@
 | 2026-08-10 | T6/T7 | TDD + finishing branch | credential/demo/Web/分发 | `0b0d413`、`246e3e2`、`71d512c` | 首版真实宿主执行、HITL 与 WebUI 存在评审缺口；根据 Critical/Important 结论修复，不以“测试已绿”替代安全审查 |
 | 2026-08-10 | 两阶段 review | requesting-code-review | 独立 reviewer 先查 spec 再查安全/质量 | `docs/CODE_REVIEW.md` | 修复宿主执行 Critical、HITL/Web Important 与 raw 复用 Minor；34 tests Green |
 | 2026-08-10 | 最终交付 | 分发 + Sites 托管 | 构建部署 WebUI、产出源码包/Git bundle/wheel | `19d5010`、`10aaf32`、`1f65783` | Windows 无 WSL、Node 不在 PATH、私有源码推送遇到 sandbox/ownership/过期 token；逐项定位后完成公开部署，未把环境失败误写成代码失败 |
+| 2026-08-10 | 远端 CI/PR | finishing-a-development-branch（方法参考） | 公开 GitHub、feature 分支、三项 CI job | PR #1，merge `623285f`，记录 `16f2003` | 学生确认合并；最终 master 的 Python/WebUI/Docker 检查全绿 |
+| 2026-08-10 | 个人反思 | 学生原创 + AI 辅助润色 | 学生先回答卡壳、评审、TDD、subagent 与重做问题 | `e24b215` | AI 只据学生原始回答和仓库证据校正事实、整理结构；正文保留辅助声明 |
 
 ## 流程偏离
 
-- Superpowers 插件在当前 Codex 会话中不可调用；按其公开七步方法组织并留证，但不能声称“插件已触发”。学生应在自己的 Codex 插件市场安装后，把实际调用证据补入本日志。
-- 当前环境只有本地仓库，没有 NJU Git 远端和账号，因此 worktree 分支在本地完成，未伪造 PR URL。
-- 正式 code review 将以本地确定性测试、diff 自审与独立 subagent 任务审查完成；远端 MR 审查需学生补充。
-- 当前仓库仍未配置远端；因此不存在可核验的 MR/PR URL 或 GitLab pipeline。最合适的补救是由学生本人在 `student/reflection` 分支完成反思，以该真实变更创建 MR，并以合并后的最终 pipeline 作为 CI pass 证据。
+- Superpowers 插件在本次开发会话中未安装；项目如实记录对其七步方法的参考，不把普通工具调用冒充插件证据。这是相对课程强制流程的明确偏离。
+- T2/T3 与冷启动 worktree 在远端建立之前完成，后来通过独立提交集成到 `master`，因此没有各自对应的真实 PR；分支、原始提交与人工修订映射保存在 `MR_PR_RECORD.md`。补建回溯性 PR 会制造虚假过程证据，所以未这样做。
+- 真实远端流程从 `feature-github-ci` 的 PR #1 开始；学生完成人工确认后合并，GitHub Actions 三项检查通过。个人反思通过独立 `student/reflection` 分支提交。
