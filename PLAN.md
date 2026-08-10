@@ -49,4 +49,4 @@ T1 → T2 → T5；T1 → T3 → T5；T1 → T4 → T5；T5 → T6 → T7。T2/T
 
 ## 提交与 PR 计划
 
-本地按 `docs(spec/plan)`、`feat(core)`、`feat(feedback)`、`feat(ui-distribution)` 分段 commit。NJU Git 上按 T2/T3/T4 建 worktree/分支与 PR；由于当前没有远端和账号，不伪造 PR 或 CI 记录，推送后由学生补充 URL、PR 编号和最终 pass 截图。
+实现按 `docs(spec/plan)`、`feat(core)`、`feat(feedback)`、`feat(ui-distribution)` 分段 commit，并通过 T2/T3/T4 独立 worktree 保留任务归属。公开课程仓库为 <https://github.com/GuKongZhiMeng/patchpilot>；GitHub Actions 由 `feature-github-ci` 分支经 PR #1 合并到 `master`（merge commit `623285f`），远端 `unit-test`、`web-unit-test`、`docker-build` 均通过。

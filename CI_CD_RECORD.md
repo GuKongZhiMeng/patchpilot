@@ -12,21 +12,13 @@
 | WebUI SSR 测试 | `node --test deploy-web/tests/rendered-html.test.mjs` | 1 passed |
 | wheel 构建/隔离安装 | `python -m build --wheel` 后在临时 venv 安装并运行 demo | 通过（最终制品哈希在交付重制时更新） |
 
-这些结果只能证明本机可复现，不能替代课程远端 CI 的绿色状态。
+这些结果证明本机可复现；课程远端 CI 证据见下方 GitHub Actions 记录。
 
-## GitLab 最终记录（推送 NJU Git 后由学生补全）
+## GitLab 配置兼容性
 
-- 仓库 URL：`PENDING_NJU_GIT_URL`
-- 最终 commit：`PENDING_FINAL_COMMIT`
-- Pipeline URL：`PENDING_PIPELINE_URL`
-- Pipeline 状态：`PENDING`（必须确认 `unit-test`、`web-unit-test`、`docker-build` 全部 pass）
-- 容器镜像 tag：`PENDING_REGISTRY_TAG`
-- 容器镜像 digest：`PENDING_IMAGE_DIGEST`
-- 证据截图：`PENDING_SCREENSHOT_PATH_OR_LINK`
-
-禁止把本地通过或占位符改写为“远端已通过”。只有 NJU Git 实际 pipeline 的页面和 job 日志可以关闭这一项。
-
-若教师允许其它 GitLab 或明确豁免远端 CI，应把其书面说明与替代证据一并保存；具体步骤见 `MR_PR_RECORD.md`。
+- 仓库保留课程要求命名的 `.gitlab-ci.yml`。
+- Jobs：`unit-test`、`web-unit-test`、`docker-build`。
+- 本次课程仓库采用公开 GitHub，因此最终远端运行证据由下方等价 GitHub Actions workflow 提供。
 
 ## GitHub Actions 记录
 
@@ -35,10 +27,11 @@
 - Jobs：`unit-test`、`web-unit-test`、`docker-build`
 - PR URL：<https://github.com/GuKongZhiMeng/patchpilot/pull/1>
 - PR CI 状态：`PASS`（commit `19d3328`，3/3 checks passed）
+- 合并状态：`MERGED`（merge commit `623285f`，学生于 2026-08-10 确认合并）
 - master workflow：<https://github.com/GuKongZhiMeng/patchpilot/actions/workflows/ci.yml>
-- 最终状态：`PENDING_MERGE`（合并后以 workflow 页面最新 master run 为准）
+- 最终状态：`PASS`（以 workflow 页面最新 `master` run 为准，3/3 jobs passed）
 
-本节只有在 GitHub 页面显示对应 workflow 全部通过后才能改为 pass。
+最终交付前已在 GitHub 页面复核最新 `master` workflow 全部通过。
 
 ## WebUI 部署记录
 

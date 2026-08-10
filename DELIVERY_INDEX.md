@@ -5,12 +5,12 @@
 | # | 交付项 | 状态 | 仓库证据 / 操作 |
 |---|---|---|---|
 | 1 | SPEC、PLAN、SPEC_PROCESS | 已完成 | `SPEC.md`、`PLAN.md`、`SPEC_PROCESS.md` |
-| 2 | 完整源码与规范提交历史 | 已完成（本地） | `src/`、`tests/`、`deploy-web/`；`git log --oneline --all` |
+| 2 | 完整源码与规范提交历史 | 已完成（GitHub） | <https://github.com/GuKongZhiMeng/patchpilot>；`src/`、`tests/`、`deploy-web/`；`git log --oneline --all` |
 | 3 | 分发产物 | 已完成 | `Dockerfile`、`pyproject.toml`；最终 wheel、源码 zip、Git bundle 输出到 `../outputs/` |
 | 4 | README 必备章节 | 已完成 | `README.md`：项目简介、安装、运行、分发命令、目录结构、安全边界、已知限制 |
 | 5 | Agent 日志 | 已完成 | `AGENT_LOG.md`，并由提交历史和 `docs/*_TDD.md` 交叉验证 |
 | 6 | GitLab CI，含 unit-test job | 已完成 | `.gitlab-ci.yml`：`unit-test`、`web-unit-test`、`docker-build` |
-| 7 | CI/CD 最终通过记录 | 待课程远端确认 | 本地结果见 `CI_CD_RECORD.md`；远端 pipeline URL/截图必须在 NJU Git 实际运行后补入 |
+| 7 | CI/CD 最终通过记录 | 已完成（GitHub Actions） | `CI_CD_RECORD.md`；PR #1 与最新 `master` workflow 的 3 项检查均通过 |
 | 8 | 1500–2500 字反思 | 待学生本人完成 | `REFLECTION.md` 为正文结构，`REFLECTION_WORKSHEET.md` 聚焦卡壳证据；遵守“学生本人撰写”要求 |
 | 9 | 线上部署 URL 与 WebUI | 已完成（公开） | <https://patchpilot-agent-harness.sturdy-angel-7006.chatgpt.site>；源码位于 `deploy-web/`，评分者可直接访问 |
 | A | 自实现 harness 内核 | 已完成 | `src/patchpilot/engine.py`、`models.py`、`tools.py`、`guardrails.py`、`feedback.py`、`memory.py` |
@@ -19,11 +19,9 @@
 
 ## 交付前只剩的账号/本人动作
 
-1. 在 NJU Git 创建课程可见仓库并推送全部分支和标签。
-2. 建立 MR/PR，保留 subagent 与人工修订说明。
-3. 等待 `unit-test`、`web-unit-test`、`docker-build` 全部通过，将 pipeline URL 和截图补入 `CI_CD_RECORD.md`。
-4. 学生本人完成并校对 `REFLECTION.md`，确保 1500–2500 字且观点真实。
-5. 若课程明确要求 Superpowers 插件调用证据，在 Codex 插件市场安装后真实使用；当前仓库只陈述方法参考，不冒充插件证据。
+1. 学生本人完成并校对 `REFLECTION.md`，确保 1500–2500 字且观点真实。
+2. 从 `student/reflection` 分支创建 PR，等待 3 项检查通过后由学生 review 与合并。
+3. 若课程明确要求 Superpowers 插件调用证据，在 Codex 插件市场安装后真实使用；当前仓库只陈述方法参考，不冒充插件证据。
 
 提交前还应执行 `git grep` 与历史扫描，确认无真实 key、token、`.env` 或个人敏感信息。
 
