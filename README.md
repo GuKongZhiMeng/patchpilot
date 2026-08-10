@@ -35,6 +35,8 @@ patchpilot serve --host 127.0.0.1 --port 8765
 patchpilot run "修复失败测试" --workspace ./target-repo --model YOUR_MODEL
 ```
 
+真实运行默认要求 Docker 容器隔离。若在宿主机运行，必须显式加 `--unsafe-local-exec`；这表示你理解测试/构建会执行仓库代码，argv 白名单不是 OS 沙箱。
+
 默认连接 OpenAI-compatible `https://api.openai.com/v1/chat/completions`；兼容供应商用 `--base-url` 指定。模型名必须由使用者显式给出，避免把会变化的默认模型写死。
 
 ## API key 安全配置
@@ -91,7 +93,7 @@ docs/             TDD 与冷启动证据
 
 ## 安全边界
 
-- `shell=False`、argv 白名单、路径 realpath 围栏、超时和输出截断降低风险，但这不是操作系统级沙箱。
+- `shell=False`、argv 白名单、路径 realpath 围栏、超时和输出截断降低风险，但只有容器/VM 才提供进程级隔离；真实运行因此默认拒绝宿主执行。
 - 允许的 `python`/`git` 等程序自身仍可能执行复杂行为；不可信任务应在一次性容器/VM 中运行。
 - WebUI 默认只绑定 loopback，没有多用户认证；若部署公网，必须在认证、TLS、限流的反向代理之后。
 - LLM 输出、工具输出和网页输入都视为不可信；key 不进入模型上下文、事件或状态输出。
@@ -100,7 +102,7 @@ docs/             TDD 与冷启动证据
 
 - Windows 无管理员权限时无法创建符号链接，因此对应逃逸测试会跳过；绝对路径和 `..` 测试仍运行。
 - 首版一次只运行一个 action，不支持并发 agent。
-- HITL token 内核已实现和测试，CLI 尚未提供交互式批准 UI；需要批准的发布动作会停止并报错。
+- HITL token 内核已实现和测试；真实 CLI 会显示精确 action 并等待一次性 `y/N` 批准，非交互调用则以 `awaiting_approval` 停机。
 - WebUI 展示 mock 机制演示，不从浏览器触发真实代码修改。
 - 公网 URL、NJU Git PR 与最终 CI pass 需要课程账号完成，见 `SUBMISSION_CHECKLIST.md`。
 - 当前 Windows 验证环境未安装 Docker CLI，因此本地未执行镜像构建；GitLab CI 已配置 `docker-build`，必须在远端确认 pass 后再声称镜像可用。

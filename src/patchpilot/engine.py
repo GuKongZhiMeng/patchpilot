@@ -25,8 +25,9 @@ class RunResult:
 class AgentLoop:
     """Owns the complete decision/tool/feedback/stop loop."""
 
-    def __init__(self, llm: LLMPort, tools: ToolRegistry, config: Config, memory: MemoryStore):
+    def __init__(self, llm: LLMPort, tools: ToolRegistry, config: Config, memory: MemoryStore, approval_callback=None):
         self.llm, self.tools, self.config, self.memory = llm, tools, config, memory
+        self.approval_callback = approval_callback
 
     def run(self, task: str, workspace_id: str) -> RunResult:
         run_id = uuid.uuid4().hex
@@ -39,6 +40,7 @@ class AgentLoop:
         feedback_loop = FeedbackLoop(self.config.repeat_failure_limit, self.config.max_output_bytes)
         repairs = 0
         for step in range(1, self.config.max_steps + 1):
+            raw = None
             try:
                 raw = self.llm.complete(messages)
                 action = Action.from_json(raw)
@@ -58,9 +60,12 @@ class AgentLoop:
                 if repairs > self.config.repair_budget:
                     return RunResult(run_id, "budget_exhausted", "Repair budget exhausted", step)
             except PatchPilotError as exc:
+                if exc.code in {"approval_required", "approval_denied"}:
+                    return RunResult(run_id, "awaiting_approval" if exc.code == "approval_required" else "approval_denied", str(exc), step)
                 outcome = {"ok": False, "error": {"code": exc.code, "message": str(exc)}}
                 self._event(run_id, step, "error", {"code": exc.code})
-            messages.append({"role": "assistant", "content": raw if 'raw' in locals() else ""})
+            if raw is not None:
+                messages.append({"role": "assistant", "content": raw})
             messages.append({"role": "user", "content": json.dumps({"observation": outcome}, ensure_ascii=False, sort_keys=True)})
         return RunResult(run_id, "step_limit", "Maximum steps reached", self.config.max_steps)
 
@@ -73,7 +78,14 @@ class AgentLoop:
             feedback = self._validate(loop)
             return self._feedback_payload(feedback), feedback
         if action.name == "run_command":
-            result = self.tools.run_command(a["argv"])
+            token = None
+            if self.tools.guardrail.classify(a["argv"]) == "approval":
+                if self.approval_callback is None:
+                    raise PatchPilotError("approval_required", "Action paused for human approval")
+                if not self.approval_callback(action):
+                    raise PatchPilotError("approval_denied", "Human denied the action")
+                token = self.tools.approval_store.issue({"action": "run_command", "args": {"argv": a["argv"]}}, 60)
+            result = self.tools.run_command(a["argv"], approval_token=token)
             return {"ok": result["returncode"] == 0, "command": result}, None
         if action.name == "run_checks":
             feedback = self._validate(loop)

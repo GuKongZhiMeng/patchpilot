@@ -38,6 +38,7 @@ def run_demo(task: str = "repair a failing unit test") -> dict[str, object]:
             _action("finish", summary="tests pass"),
         ])
         repaired_result = AgentLoop(llm, tools, cfg, memory).run(task, "demo")
+        repaired_events = memory.events(repaired_result.run_id)
         root.joinpath("__pycache__").mkdir(exist_ok=True)
         stalled_llm = ScriptedLLM([
             _action("write_file", path="test_demo.py", content=failing),
@@ -52,4 +53,6 @@ def run_demo(task: str = "repair a failing unit test") -> dict[str, object]:
         "deep_mechanism": "stalled_on_repeat" if stalled_result.status == "stalled" else stalled_result.status,
         "feedback_seen": "feedback" in llm.calls[1][-1]["content"],
         "action_changed": failing != repaired,
+        "workspace": "ephemeral-temp",
+        "events": repaired_events,
     }

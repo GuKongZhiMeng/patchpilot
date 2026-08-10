@@ -42,6 +42,19 @@ class Guardrail:
             return "deny"
         if program not in self.allowed_commands:
             return "deny"
+        if program.startswith("python"):
+            if lower_args and lower_args[0] in {"-c", "-"}:
+                return "deny"
+            if lower_args[:1] == ["-m"] and (len(lower_args) < 2 or lower_args[1] not in {"unittest", "pytest", "compileall"}):
+                return "deny"
+            if lower_args and not lower_args[0].startswith("-"):
+                return "deny"
+        if program == "git" and any(item == "-c" or item.startswith("--git-dir") or item.startswith("--work-tree") for item in lower_args):
+            return "deny"
+        if program == "git" and "-c" in [item.lower() for item in argv[1:]]:
+            return "deny"
+        if program == "git" and "-c" not in lower_args and any(item == "-C" for item in argv[1:]):
+            return "deny"
         if (program == "git" and ("push" in lower_args or ("reset" in lower_args and "--hard" in lower_args))):
             return "approval"
         if (program == "docker" and "push" in lower_args) or (program == "npm" and "publish" in lower_args):

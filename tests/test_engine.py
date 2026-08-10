@@ -7,6 +7,7 @@ from pathlib import Path
 from patchpilot.config import Config
 from patchpilot.engine import AgentLoop
 from patchpilot.guardrails import Guardrail
+from patchpilot.guardrails import ApprovalStore
 from patchpilot.llm import ScriptedLLM
 from patchpilot.memory import MemoryStore
 from patchpilot.tools import ToolRegistry
@@ -71,6 +72,31 @@ class AgentLoopTests(unittest.TestCase):
         result = AgentLoop(llm, self.tools, self.config, self.memory).run("noop", "ws")
         self.assertEqual(result.status, "completed")
         self.assertIn("invalid_json", llm.calls[1][-1]["content"])
+
+    def test_publish_pauses_without_callback(self):
+        class FakeTools:
+            guardrail = Guardrail(["git"])
+            approval_store = ApprovalStore()
+            def run_checks(self): return []
+        llm = ScriptedLLM([action("run_command", argv=["git", "push"])])
+        result = AgentLoop(llm, FakeTools(), self.config, self.memory).run("publish", "ws")
+        self.assertEqual(result.status, "awaiting_approval")
+        self.assertEqual(len(llm.calls), 1)
+
+    def test_publish_executes_after_callback_approval(self):
+        class FakeTools:
+            guardrail = Guardrail(["git"])
+            approval_store = ApprovalStore(token_factory=lambda: "approved")
+            def run_checks(self): return []
+            def run_command(self, argv, approval_token=None):
+                self.seen = (argv, approval_token)
+                self.approval_store.consume(approval_token, {"action":"run_command","args":{"argv":argv}})
+                return {"returncode":0,"stdout":"","stderr":"","timed_out":False,"truncated":False}
+        fake = FakeTools(); llm = ScriptedLLM([action("run_command", argv=["git", "push"]), action("finish", summary="published")])
+        loop = AgentLoop(llm, fake, self.config, self.memory, approval_callback=lambda _action: True)
+        result = loop.run("publish", "ws")
+        self.assertEqual(result.status, "completed")
+        self.assertEqual(fake.seen, (["git", "push"], "approved"))
 
 
 if __name__ == "__main__": unittest.main()

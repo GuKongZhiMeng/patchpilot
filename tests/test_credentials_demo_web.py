@@ -4,6 +4,7 @@ import tempfile
 import threading
 import unittest
 import urllib.request
+from importlib.resources import files
 from pathlib import Path
 
 from patchpilot.credentials import CredentialStore
@@ -43,9 +44,16 @@ class DemoTests(unittest.TestCase):
         self.assertEqual(result["deep_mechanism"], "stalled_on_repeat")
         self.assertTrue(result["feedback_seen"])
         self.assertTrue(result["action_changed"])
+        self.assertEqual(result["workspace"], "ephemeral-temp")
+        self.assertGreaterEqual(len(result["events"]), 3)
 
 
 class WebTests(unittest.TestCase):
+    def test_page_has_structured_workspace_safety_and_timeline(self):
+        html = files("patchpilot.static").joinpath("index.html").read_text(encoding="utf-8")
+        for marker in ('id="workspace"', 'id="safety"', 'id="events"'):
+            self.assertIn(marker, html)
+
     def test_health_and_security_headers(self):
         server = create_server("127.0.0.1", 0)
         thread = threading.Thread(target=server.serve_forever, daemon=True); thread.start()

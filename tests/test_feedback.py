@@ -39,6 +39,11 @@ class OutputNormalisationTests(unittest.TestCase):
         self.assertEqual(plain, coloured)
         self.assertEqual(plain, failure_fingerprint(FailureCategory.TEST_ASSERTION, "AssertionError: x"))
 
+    def test_fingerprint_ignores_volatile_test_duration(self):
+        first = failure_fingerprint(FailureCategory.TEST_ASSERTION, "FAILED\nRan 1 test in 0.001s")
+        second = failure_fingerprint(FailureCategory.TEST_ASSERTION, "FAILED\nRan 1 test in 0.137s")
+        self.assertEqual(first, second)
+
 
 class FeedbackLoopTests(unittest.TestCase):
     def test_repeated_failure_trips_circuit_breaker(self):

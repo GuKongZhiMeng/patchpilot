@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import getpass
 import json
+import os
 from pathlib import Path
 
 from .credentials import CredentialStore
@@ -25,12 +26,15 @@ def main(argv=None) -> int:
     run.add_argument("task"); run.add_argument("--workspace", default=".")
     run.add_argument("--base-url", default="https://api.openai.com/v1"); run.add_argument("--model", required=True)
     run.add_argument("--secret-file")
+    run.add_argument("--unsafe-local-exec", action="store_true", help="acknowledge that host subprocesses are not an OS sandbox")
     web = sub.add_parser("serve"); web.add_argument("--host", default="127.0.0.1"); web.add_argument("--port", type=int, default=8765)
     key = sub.add_parser("key"); key.add_argument("action", choices=["status", "set", "clear"])
     args = parser.parse_args(argv)
     if args.command == "demo": print(json.dumps(run_demo(), ensure_ascii=False, indent=2)); return 0
     if args.command == "serve": serve(args.host, args.port); return 0
     if args.command == "run":
+        if os.environ.get("PATCHPILOT_CONTAINER") != "1" and not args.unsafe_local_exec:
+            parser.error("real runs require the Docker sandbox; pass --unsafe-local-exec only if you accept host-code execution risk")
         root = Path(args.workspace).resolve(); cfg = Config()
         credentials = CredentialStore(secret_file=args.secret_file)
         api_key = credentials.get()
@@ -45,7 +49,10 @@ def main(argv=None) -> int:
                 max_output_bytes=cfg.max_output_bytes, check_commands=cfg.check_commands,
             )
             llm = OpenAICompatibleLLM(args.base_url, args.model, api_key, cfg.command_timeout_seconds)
-            result = AgentLoop(llm, tools, cfg, memory).run(args.task, str(root))
+            def approve(action):
+                shown = json.dumps({"action": action.name, "args": action.args}, ensure_ascii=False)
+                return input(f"Approve once? {shown} [y/N] ").strip().lower() == "y"
+            result = AgentLoop(llm, tools, cfg, memory, approval_callback=approve).run(args.task, str(root))
             print(json.dumps(result.__dict__, ensure_ascii=False, indent=2)); return 0 if result.status == "completed" else 2
         finally:
             memory.close()

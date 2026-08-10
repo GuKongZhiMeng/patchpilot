@@ -53,7 +53,7 @@ class GuardrailTests(unittest.TestCase):
         self.guardrail = Guardrail(["python", "git", "docker"])
 
     def test_denies_dangerous_commands_and_shell_interpreters(self) -> None:
-        for argv in (["rm", "-rf", "/"], ["cmd", "/c", "echo hi"], ["powershell", "-Command", "dir"]):
+        for argv in (["rm", "-rf", "/"], ["cmd", "/c", "echo hi"], ["powershell", "-Command", "dir"], ["python", "-c", "print(1)"], ["git", "-C", "../outside", "status"]):
             self.assertEqual("deny", self.guardrail.classify(argv))
 
     def test_requires_single_use_approval_for_publish(self) -> None:
@@ -86,7 +86,7 @@ class ToolRegistryTests(unittest.TestCase):
         self.tmp.cleanup()
 
     def test_runs_allowed_command_without_a_shell_and_truncates_output(self) -> None:
-        result = self.tools.run_command([sys.executable, "-c", "print('x' * 100)"])
+        result = self.tools.run_command([sys.executable, "-m", "unittest", "--help"])
         self.assertEqual(0, result["returncode"])
         self.assertTrue(result["truncated"])
         self.assertLessEqual(len(result["stdout"].encode("utf-8")), 32)
