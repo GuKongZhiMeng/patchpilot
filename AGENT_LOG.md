@@ -16,7 +16,7 @@
 | 2026-08-10 | 两阶段 review | requesting-code-review | 独立 reviewer 先查 spec 再查安全/质量 | `docs/CODE_REVIEW.md` | 修复宿主执行 Critical、HITL/Web Important 与 raw 复用 Minor；34 tests Green |
 | 2026-08-10 | 最终交付 | 分发 + Sites 托管 | 构建部署 WebUI、产出源码包/Git bundle/wheel | `19d5010`、`10aaf32`、`1f65783` | Windows 无 WSL、Node 不在 PATH、私有源码推送遇到 sandbox/ownership/过期 token；逐项定位后完成公开部署，未把环境失败误写成代码失败 |
 | 2026-08-10 | 远端 CI/PR | finishing-a-development-branch（方法参考） | 公开 GitHub、feature 分支、三项 CI job | PR #1，merge `623285f`，记录 `16f2003` | 学生确认合并；最终 master 的 Python/WebUI/Docker 检查全绿 |
-| 2026-08-10 | 个人反思 | 学生原创 + AI 辅助润色 | 学生先回答卡壳、评审、TDD、subagent 与重做问题 | `e24b215` | AI 只据学生原始回答和仓库证据校正事实、整理结构；正文保留辅助声明 |
+| 2026-08-10 | 个人反思 | 学生原创 + AI 辅助润色 | 学生先回答卡壳、评审、TDD、subagent 与重做问题 | `e24b215`，PR #2 | AI 只据学生原始回答和仓库证据校正事实、整理结构；正文及 PR 保留辅助声明 |
 
 ## 流程偏离
 
