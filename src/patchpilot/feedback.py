@@ -104,6 +104,7 @@ def failure_fingerprint(category: FailureCategory | str, output: str) -> str:
     """Create a stable SHA-256 identifier for a normalized failure."""
     category_value = category.value if isinstance(category, FailureCategory) else str(category)
     normalized = clean_ansi(output).replace("\r\n", "\n").replace("\r", "\n")
+    normalized = re.sub(r"\b\d+(?:\.\d+)?s\b", "<duration>", normalized)
     payload = f"{category_value}\n{normalized}".encode("utf-8")
     return hashlib.sha256(payload).hexdigest()
 

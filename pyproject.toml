@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "patchpilot-harness"
+version = "0.1.0"
+description = "Auditable coding-agent harness with deterministic governance and feedback"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+
+[project.optional-dependencies]
+secure = ["keyring>=25"]
+
+[project.scripts]
+patchpilot = "patchpilot.cli:main"
+
+[tool.setuptools.package-data]
+"patchpilot.static" = ["*.html"]
+
