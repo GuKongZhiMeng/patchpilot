@@ -14,7 +14,7 @@ web-unit-test:
     - corepack prepare pnpm@11.16.0 --activate
   script:
     - cd deploy-web
-    - pnpm install --frozen-lockfile
+    - pnpm install --frozen-lockfile --ignore-scripts
     - pnpm run build
     - node --test tests/rendered-html.test.mjs
   artifacts:

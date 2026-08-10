@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  unit-test:
+    name: Python unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Run deterministic harness tests
+        env:
+          PYTHONPATH: src
+        run: python -m unittest discover -s tests -v
+
+  web-unit-test:
+    name: WebUI build and SSR test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: deploy-web
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+      - name: Enable pinned pnpm
+        run: corepack enable && corepack prepare pnpm@11.16.0 --activate
+      - name: Install locked dependencies
+        # The site has no dependency install hooks; disabling them also prevents
+        # pnpm's unapproved-build policy from turning a safe install into failure.
+        run: pnpm install --frozen-lockfile --ignore-scripts
+      - name: Build and test rendered output
+        run: pnpm run test
+
+  docker-build:
+    name: Docker image build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Build distribution image
+        run: docker build --tag patchpilot:${{ github.sha }} .
